@@ -5,16 +5,16 @@
 struct Node
 {
 	int val;
-	sturct Node *next;
-}
+	struct Node *next;
+};
 
-void initList(struct *node)
+void initList(struct Node *node )
 {
 	node = NULL;
 	printf("initList complete\n");
 }
 
-struct Node *createList(struct *head)
+struct Node *createList(struct Node *head)
 {
 	struct Node *current;
 	struct Node *prev;
@@ -94,14 +94,15 @@ void clearList(struct Node *head)
 			prev = current->next;
 			free(current);
 			current = prev;
-		} 
+		}
+	head->next = NULL;
 	printf("clearList complete\n");
 }
 
 int listLen(struct Node *head)
 {
 	int len = 0;
-	struct Node current;
+	struct Node *current;
 	current = head;
 	if(current == NULL)
 	{
@@ -125,7 +126,7 @@ int isEmptyList(struct Node *head)
 	}
 	else 
 	{
-		printf("List isn't NULL\n")
+		printf("List isn't NULL\n");
 		return 0;
 	}
 }
@@ -134,6 +135,8 @@ int getElement(struct Node *head,int pos)
 {
 	struct Node *current;
 	current = head;
+	if(current == NULL)
+		return -1;
 	if(pos<=0)
 	{
 		printf("Pos illegl\n");
@@ -164,13 +167,13 @@ struct Node *getElementAddr(struct Node *head,int val)
 	}
 	while(current != NULL)
 	{
-		if(current->next == val)
+		if(current->val == val)
 		{
 			printf("GetElementAddr complete\n");
 			return current;
 		}
 		else
-			current = cuurent->next;
+			current = current->next;
 	}		
 	printf("List haven't the val\n");
 	return NULL;
@@ -192,7 +195,7 @@ int reviseElement(struct Node *head,int pos,int val)
 	}
 	if(pos > listLen(head))
 	{
-		printf( printf("Pos is bigger than list\n");
+		printf("Pos is bigger than list\n");
                 return -1;
 	}
 	for(int i =0; i<pos;i++)
@@ -218,7 +221,7 @@ struct Node *insertHeadList(struct Node  *head,int val)
 	}
 	prev = (struct Node *)malloc(sizeof(struct Node));
 	prev->val = val;
-	prev-next = head;
+	prev->next = head;
 	return prev;
 }
 		
@@ -229,7 +232,7 @@ struct Node *insertLastList(struct Node *head,int val)
 	current = head;
 	if(current == NULL)
 	{
-		prev = (struct Node *)malloc(sizeof(struct Node))
+		prev = (struct Node *)malloc(sizeof(struct Node));
 		prev->val = val;
 		return prev;
 	}
@@ -238,18 +241,18 @@ struct Node *insertLastList(struct Node *head,int val)
 	prev = (struct Node *)malloc(sizeof(struct Node));
 	prev->val = val;
 	current->next = prev;
-	prev-next = NULL;
+	prev->next = NULL;
 	return head;
 }
 
-int insertList(struct Node *head,int pos ,val)
+int insertList(struct Node *head,int pos ,int val)
 {
 	struct Node *current;
 	struct Node *prev;
 	current = head;
 	if(current == NULL)
 	{
-		prev = (struct Node *)malloc(sizeof(struct Node))
+		prev = (struct Node *)malloc(sizeof(struct Node));
                 prev->val = val;
                 return -1;
         }
@@ -257,7 +260,7 @@ int insertList(struct Node *head,int pos ,val)
 	{
 		current=current->next;
 	}
-	prev = (struct Node *)malloc(sizeof(struct Node))
+	prev = (struct Node *)malloc(sizeof(struct Node));
         prev->val = val;
 	prev->next = current->next->next;
 	current->next = prev;
@@ -310,7 +313,7 @@ int deletePosList(struct Node *head,int pos)
 	current = head;
 	if(current == NULL)
 	{
-		printf("List is NULL\n")
+		printf("List is NULL\n");
 		return -1;
 	}
 	if(pos > listLen(head))
@@ -318,4 +321,19 @@ int deletePosList(struct Node *head,int pos)
 		printf("Pos is bigger than list\n");
 		return -1;
 	}
-	
+
+}
+
+int main(int argc,char *argv[])
+{
+	struct Node *list;
+	initList(list);
+	list = createList(list);
+	printf("List len is %d\n",listLen(list));
+	printList(list);
+	clearList(list);	
+	printf("List len is %d\n",listLen(list));
+	printList(list);
+	getElement(list,1);
+//	printList(list);
+}	
